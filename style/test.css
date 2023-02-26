@@ -72,25 +72,6 @@ body {
 	background-color: seashell;
 }
 
-.quiz-list label.correct {
-	color: rgb(36, 144, 77);
-	font-weight: bold;
-}
-
-.quiz-list label.disabled {
-	cursor: no-drop;
-}
-
-.quiz-list label.disabled:hover {
-	cursor: no-drop;
-	background-color: transparent;
-}
-
-.quiz-list label.wrong {
-	color: rgb(218, 59, 59);
-	font-weight: bold;
-}
-
 .quiz-list input[type="radio"] {
 	margin-right: 10px;
 }
@@ -125,43 +106,3 @@ body {
 	background-color: #5e3370;
 }
 
-.submit.next {
-	background-color: #000000;
-}
-
-.submit.next:hover {
-	background-color: #222222;
-}
-
-.submit.next:focus {
-	outline: none;
-	background-color: #444444;
-}
-
-.quiz-list.shake {
-	animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
-	transform: translate3d(0, 0, 0);
-	backface-visibility: hidden;
-	perspective: 1000px;
-	color: #94ca00;
-}
-
-@keyframes shake {
-	10%,
-	90% {
-		transform: translate3d(-1px, 0, 0);
-	}
-	20%,
-	80% {
-		transform: translate3d(2px, 0, 0);
-	}
-	30%,
-	50%,
-	70% {
-		transform: translate3d(-4px, 0, 0);
-	}
-	40%,
-	60% {
-		transform: translate3d(4px, 0, 0);
-	}
-}
