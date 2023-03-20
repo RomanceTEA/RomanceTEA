@@ -1,4 +1,5 @@
-let name = localStorage.getItem('name');
+const name = localStorage.getItem('name');
+const email = localStorage.getItem('email');
 
 const questions = [
   {
@@ -21,6 +22,26 @@ const questions = [
     answer: ["Варіант 1" , "Варіант 2", "Варіант 3", "Варіант 4"],
     correct: 4,
   },
+  {
+    question: "Питання 5",
+    answer: ["Варіант 1" , "Варіант 2", "Варіант 3", "Варіант 4"],
+    correct: [1, 4],
+  },
+  {
+    question: "Питання 6",
+    answer: ["Варіант 1" , "Варіант 2", "Варіант 3", "Варіант 4"],
+    correct: [2, 3],
+  },
+  {
+    question: "Питання 7",
+    answer: ["Варіант 1" , "Варіант 2", "Варіант 3", "Варіант 4"],
+    correct: [2, 3, 4],
+  },
+  {
+    question: "Питання 8",
+    answer: ["Варіант 1" , "Варіант 2", "Варіант 3", "Варіант 4"],
+    correct: [1, 2],
+  },
 ];
 
 const headerContainer = document.querySelector('#header');
@@ -31,15 +52,26 @@ let score = 0;
 let questionIndex = 0;
 
 clearPage();
-showQuestion();
-submitBtn.onclick = checkAnswer;
+checkbox();
+
+
+function checkbox(){
+  if (questions[questionIndex].correct.length > 1) {
+    showQuestion2();
+  } else if (questions[questionIndex].correct.length = 1){
+    showQuestion1();
+  }
+  else {
+    showQuestion3();
+  }
+}
 
 function clearPage(){
   headerContainer.innerHTML = '';
   listContainer.innerHTML = '';
 }
 
-function showQuestion(){
+function showQuestion1(){
   const headerTemplate = `<h2 class="title">%title%</h2>`;
   const title = headerTemplate.replace('%title%', questions[questionIndex]['question'])
 
@@ -62,33 +94,89 @@ function showQuestion(){
 
   listContainer.innerHTML += answerHTML;
   answerNumber++;
+  submitBtn.onclick = checkRadioAnswer;
   }
 }
 
-function checkAnswer(){
-  const checkRadio = listContainer.querySelector('input[type="radio"]:checked');
-   
-  if (!checkRadio) {
-    submitBtn.blur();
-      return
-  }
+function showQuestion2(){
+  const headerTemplate2 = `<h2 class="title">%title%</h2>`;
+  const title = headerTemplate2.replace('%title%', questions[questionIndex]['question'])
 
-  const userAnswer = parseInt(checkRadio.value);
-  
-  if (userAnswer === questions[questionIndex]['correct']){
-    score++;
-  }
+  let answerNumber = 1;
+  let answerText;
 
+  headerContainer.innerHTML = title;
+
+  for (answerText of questions[questionIndex]['answer']) {
+    const questionTemplate2 = 
+    `<li>
+    <label>
+      <input value="%number%" type="checkbox" class="answer" name="answer" />
+      <span>%answer%</span>
+    </label>
+  </li>`;
+
+  let answerHTML = questionTemplate2.replace('%answer%',answerText);
+  answerHTML = answerHTML.replace('%number%', answerNumber);
+
+  listContainer.innerHTML += answerHTML;
+  answerNumber++;
+  submitBtn.onclick = checkBoxAnswer;
+  }
+}
+
+function checklong(){
   if (questionIndex !== questions.length - 1){
     questionIndex++;
     clearPage();
-    showQuestion();
+    checkbox();
     return
   } else {
     clearPage();
     showResults();
   }
 }
+
+function checkBoxAnswer() {
+  const checkboxes = listContainer.querySelectorAll('input[type="checkbox"]:checked');
+  let isCorrect = true;
+
+  if (!checkboxes) {
+    submitBtn.blur();
+      return
+  }
+
+  checkboxes.forEach((checkbox) => {
+    const userAnswer = parseInt(checkbox.value);
+    if (!questions[questionIndex]['correct'].includes(userAnswer)) {
+      isCorrect = false;
+    }
+  });
+
+  if (isCorrect && checkboxes.length === questions[questionIndex]['correct'].length) {
+    score++;
+  }
+
+  console.log(score);
+  checklong();
+}
+
+
+function checkRadioAnswer(){
+  const checkRadio = listContainer.querySelector('input[type="radio"]:checked');
+  const userAnswer = parseInt(checkRadio.value);
+ 
+  if (!checkRadio) {
+    submitBtn.blur();
+      return
+  }
+
+  if (userAnswer === questions[questionIndex]['correct']) {
+    score++;
+  }
+    console.log(score);
+    checklong();
+  }
 
 function showResults(){
   const resultsTemplate = 
@@ -123,6 +211,10 @@ function showResults(){
     
     emailjs.send("21312312312", "template_efgjwme", {
       name: name,
+      score: score,
+    })
+    emailjs.send("21312312312", "template_1aityip", {
+      email: email,
       score: score,
     })
     .then(function(response) {
