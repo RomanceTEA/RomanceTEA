@@ -54,15 +54,11 @@ let questionIndex = 0;
 clearPage();
 checkbox();
 
-
 function checkbox(){
   if (questions[questionIndex].correct.length > 1) {
     showQuestion2();
   } else if (questions[questionIndex].correct.length = 1){
     showQuestion1();
-  }
-  else {
-    showQuestion3();
   }
 }
 
@@ -156,8 +152,7 @@ function checkBoxAnswer() {
   if (isCorrect && checkboxes.length === questions[questionIndex]['correct'].length) {
     score++;
   }
-
-  console.log(score);
+  
   checklong();
 }
 
